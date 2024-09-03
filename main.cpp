@@ -24,13 +24,13 @@ int main(int argc, char* argv[]) {
   assert(argc > 1);
   std::string filename(argv[1]);
   std::string input = readFile2(filename);
-  monkey::Lexer l;
-  monkey::Parser p;
-  monkey::Evaluator e;
-  monkey::Environment* env = new monkey::Environment();
+  Interpreter::Lexer l;
+  Interpreter::Parser p;
+  Interpreter::Evaluator e;
+  Interpreter::Environment* env = new Interpreter::Environment();
   l.New(input);
   p.New(l);
-  monkey::Program* program = p.ParseProgram();
+  Interpreter::Program* program = p.ParseProgram();
   if (p.Errors().size()) {
     std::cout << "Syntax Error: " << std::endl;
     for (auto error : p.Errors()) {
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     }
     return 0;
   }
-  monkey::Object* o = e.Eval(program, env);
+  Interpreter::Object* o = e.Eval(program, env);
   std::cout << std::endl << "return: " << std::endl;
   std::cout << "type:  " << o->Type() << std::endl;
   std::cout << "value: " << o->Inspect() << std::endl;

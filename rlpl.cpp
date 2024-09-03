@@ -4,14 +4,14 @@
 
 void sh() {
   const std::string PROMPT = ">> ";
-  monkey::Lexer l;
+  Interpreter::Lexer l;
   while(true) {
     std::string line;
     std::cout << PROMPT;
     std::getline(std::cin, line);
     l.New(line);
-    monkey::Token t = l.NextToken();
-    while(t.type != monkey::END) {
+    Interpreter::Token t = l.NextToken();
+    while(t.type != Interpreter::END) {
       std::cout << "Type: " << t.type << ", Literal: " << t.literal << std::endl;
       t = l.NextToken();
     }

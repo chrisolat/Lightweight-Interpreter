@@ -1,7 +1,7 @@
 #include <ctype.h>
 #include "./lexer.h"
 
-namespace monkey {
+namespace Interpreter {
 
 /*
  * utility functions
@@ -198,4 +198,4 @@ Token Lexer::NextToken() {
   return tok;
 }
 
-}  // namespace monkey
+}  // namespace Interpreter

@@ -1,7 +1,7 @@
 #include "./parser.h"
 #include <stdexcept>
 
-namespace monkey {
+namespace Interpreter {
 std::unordered_map<TokenType, Precedence> precedences({
   {EQ,   EQUALS},
   {NE,   EQUALS},
@@ -459,4 +459,4 @@ Program* Parser::ParseProgram() {
   return program;
 }
 
-}  // namespace monkey
+}  // namespace Interpreter

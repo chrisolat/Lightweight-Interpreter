@@ -1,10 +1,10 @@
-#ifndef MONKEY_LEXER_H_
-#define MONKEY_LEXER_H_
+#ifndef Interpreter_LEXER_H_
+#define Interpreter_LEXER_H_
 
 #include "token.h"
 #include <string>
 
-namespace monkey {
+namespace Interpreter {
 
 class Lexer {
  public:
@@ -24,7 +24,7 @@ class Lexer {
   char ch;
 };
 
-}  // namespace monkey
+}  // namespace Interpreter
 
 
-#endif //MONKEY_LEXER_H_
+#endif //Interpreter_LEXER_H_

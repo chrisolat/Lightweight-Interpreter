@@ -1,6 +1,6 @@
 #include "./object.h"
 
-namespace monkey {
+namespace Interpreter {
   Null* __NULL = new Null();
   Boolean* __TRUE = new Boolean(true);
   Boolean* __FALSE = new Boolean(false);

@@ -1,10 +1,10 @@
-#ifndef MONKEY_AST_H_
-#define MONKEY_AST_H_
+#ifndef Interpreter_AST_H_
+#define Interpreter_AST_H_
 #include <string>
 #include <vector>
 #include "token.h"
 
-namespace monkey {
+namespace Interpreter {
 /*
  * Interfaces
  * use pure class to imitate interface.
@@ -284,6 +284,6 @@ class BlockStatement : public Statement {
   std::vector<Statement*> statements;
 };
 
-}  // namespace monkey
+}  // namespace Interpreter
 
-#endif  // MONKEY_AST_H_
+#endif  // Interpreter_AST_H_

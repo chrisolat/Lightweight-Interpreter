@@ -4,15 +4,15 @@
 
 void sh() {
     const std::string PROMPT = ">> ";
-    monkey::Lexer l;
-    monkey::Parser p;
+    Interpreter::Lexer l;
+    Interpreter::Parser p;
     while(true) {
         std::string line;
         std::cout << PROMPT;
         std::getline(std::cin, line);
         l.New(line);
         p.New(l);
-        monkey::Program* program = p.ParseProgram();
+        Interpreter::Program* program = p.ParseProgram();
         if (p.Errors().size()) {
             for (auto error : p.Errors()) {
                 std::cout << error << std::endl;

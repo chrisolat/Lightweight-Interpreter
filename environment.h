@@ -1,11 +1,11 @@
-#ifndef MONKEY_ENVIRONMENT_H_
-#define MONKEY_ENVIRONMENT_H_
+#ifndef Interpreter_ENVIRONMENT_H_
+#define Interpreter_ENVIRONMENT_H_
 
 #include <unordered_map>
 #include <string>
 #include "object.h"
 
-namespace monkey {
+namespace Interpreter {
 // environment should only detach object pointer from store
 // never delete in environment
 class Environment {
@@ -70,6 +70,6 @@ public:
   Environment* outer;
 };
 
-}  // namespace monkey
+}  // namespace Interpreter
 
-#endif  // MONKEY_ENVIRONMENT_H_
+#endif  // Interpreter_ENVIRONMENT_H_

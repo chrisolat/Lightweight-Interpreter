@@ -1,6 +1,6 @@
 #include "./ast.h"
 
-namespace monkey{
+namespace Interpreter{
 
 std::string Program::TokenLiteral() {
   if(statements.size()) {
@@ -119,4 +119,4 @@ std::string IndexExpression::String() {
   return "(" + array->String() + "[" + index->String() + "])";
 }
 
-}  // namespace monkey
+}

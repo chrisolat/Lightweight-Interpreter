@@ -1,5 +1,5 @@
-#ifndef MONKEY_EVALUATOR_H_
-#define MONKEY_EVALUATOR_H_
+#ifndef Interpreter_EVALUATOR_H_
+#define Interpreter_EVALUATOR_H_
 
 #include <unordered_map>
 #include <functional>
@@ -9,7 +9,7 @@
 #include "environment.h"
 #include "gc.h"
 
-namespace monkey {
+namespace Interpreter {
 class Evaluator {
  public:
   Object* Eval(Node* node, Environment* env);
@@ -34,6 +34,6 @@ class Evaluator {
 
 };
   
-}  // namespace monkey
+}  // namespace Interpreter
 
-#endif  // MONKEY_EVALUATOR_H_
+#endif  // Interpreter_EVALUATOR_H_

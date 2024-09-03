@@ -1,7 +1,7 @@
 #include "./evaluator.h"
 #include <iostream>
 
-namespace monkey {
+namespace Interpreter {
 
 /*
  * builtin
@@ -367,4 +367,4 @@ Object* Evaluator::Eval(Node* node, Environment* env) {
   }
 }
 
-}  // namespace monkey
+}  // namespace Interpreter

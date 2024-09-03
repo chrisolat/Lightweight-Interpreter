@@ -1,9 +1,9 @@
-#ifndef MONKEY_GC_H_
-#define MONKEY_GC_H_
+#ifndef Interpreter_GC_H_
+#define Interpreter_GC_H_
 #include "object.h"
 #include "environment.h"
 
-namespace monkey {
+namespace Interpreter {
 
 class Environment;
 
@@ -59,6 +59,6 @@ class GarbageCollector {
   Object* head;
 };
 
-}  // namespace monkey
+}  // namespace Interpreter
 
-#endif  // MONKEY_GC_
+#endif  // Interpreter_GC_

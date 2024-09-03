@@ -1,5 +1,5 @@
-#ifndef MONKEY_PARSER_H_
-#define MONKEY_PARSER_H_
+#ifndef Interpreter_PARSER_H_
+#define Interpreter_PARSER_H_
 
 #include <vector>
 #include <string>
@@ -7,7 +7,7 @@
 #include "lexer.h"
 #include "ast.h"
 
-namespace monkey {
+namespace Interpreter {
 
 class Parser;
 
@@ -80,7 +80,7 @@ class Parser {
   std::vector<std::string> errors;
 };
 
-}  // namespace monkey
+}  // namespace Interpreter
 
 
-#endif  // MONKEY_PARSER_H_
+#endif  // Interpreter_PARSER_H_

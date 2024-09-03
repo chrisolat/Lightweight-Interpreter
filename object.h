@@ -1,11 +1,11 @@
-#ifndef MONKEY_OBJECT_H_
-#define MONKEY_OBJECT_H_
+#ifndef Interpreter_OBJECT_H_
+#define Interpreter_OBJECT_H_
 
 #include <vector>
 #include <string>
 #include "ast.h"
 
-namespace monkey {
+namespace Interpreter {
 
 typedef std::string ObjectType;
 
@@ -143,7 +143,7 @@ extern Null* __NULL;
 extern Boolean* __TRUE;
 extern Boolean* __FALSE;
 
-}  // namespace monkey
+}  // namespace Interpreter
 
 
-#endif  // MONKEY_OBJECT_H_
+#endif  // Interpreter_OBJECT_H_
