@@ -1,6 +1,6 @@
 #include "./token.h"
 
-namespace monkey {
+namespace Interpreter {
 
 std::unordered_map<std::string, TokenType> keywords({
   {"let", LET},
@@ -19,4 +19,4 @@ TokenType LookupIdent(std::string ident) {
   return keywords[ident];
 }
 
-}  // namespace monkey
+}  // namespace Interpreter

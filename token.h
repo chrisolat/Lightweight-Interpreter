@@ -1,9 +1,9 @@
-#ifndef MONKEY_TOKEN_H_
-#define MONKEY_TOKEN_H_
+#ifndef Interpreter_TOKEN_H_
+#define Interpreter_TOKEN_H_
 #include <string>
 #include <unordered_map>
 
-namespace monkey {
+namespace Interpreter {
 
 typedef std::string TokenType;
 class Token {
@@ -65,6 +65,6 @@ extern std::unordered_map<std::string, TokenType> keywords;
 
 TokenType LookupIdent(std::string ident);
 
-}  // namespace monkey
+}  // namespace Interpreter
 
-#endif  //MONKEY_TOKEN_H_
+#endif  //Interpreter_TOKEN_H_
