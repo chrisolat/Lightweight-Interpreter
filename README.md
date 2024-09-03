@@ -2,7 +2,7 @@
 ## Usage
 ```bash
 > g++ -std=c++11 main.cpp ast.cpp evaluator.cpp lexer.cpp object.cpp parser.cpp token.cpp -o out --debug
-> ./monkey test.mk
+> ./out test.mk
 hello world!
 minimal prime factor for 1321231 is 487 
 
