@@ -1,142 +1,201 @@
-#include <iostream>
-#include <string>
-#include "lexer.hpp"
-#include "token.hpp"
+#include <ctype.h>
+#include "./lexer.h"
 
-namespace Lexer{
-    lexer New(std::string input){
-        Lexer::lexer l;
-        l.input = input;
-        l.readChar();
-        return l;
-    }
+namespace monkey {
 
-    Token::token NextToken(Lexer::lexer& l){
-        Token::token tok;
-        skipWhitespace(l);
-        switch (l.ch)
-        {
-        case '=':
-            if(peekChar(l) == '='){
-                char c = l.ch;
-                l.readChar();
-                tok = newToken(Token::TokenType::EQ, c + l.ch);
-                tok.literal = "==";
-            }else{
-                tok = newToken(Token::TokenType::ASSIGN, l.ch);
-            }
-            break;
-        case ';':
-            tok = newToken(Token::TokenType::SEMICOLON, l.ch);
-            break;
-        case '(':
-            tok = newToken(Token::TokenType::LPAREN, l.ch);
-            break;
-        case ')':
-            tok = newToken(Token::TokenType::RPAREN, l.ch);
-            break;
-        case ',':
-            tok = newToken(Token::TokenType::COMMA, l.ch);
-            break;
-        case '{':
-            tok = newToken(Token::TokenType::LBRACE, l.ch);
-            break;
-        case '+':
-            tok = newToken(Token::TokenType::PLUS, l.ch);
-            break;
-        case '}':
-            tok = newToken(Token::TokenType::RBRACE, l.ch);
-            break;
-        case '-':
-            tok = newToken(Token::TokenType::MINUS, l.ch);
-            break;
-        case '!':
-            if(peekChar(l) == '='){
-                char c = l.ch;
-                l.readChar();
-                tok = newToken(Token::TokenType::NOT_EQ, c + l.ch);
-                tok.literal = "!=";
-            }else{
-                tok = newToken(Token::TokenType::BANG, l.ch);
-            }
-            break;
-        case '*':
-            tok = newToken(Token::TokenType::ASTERISK, l.ch);
-            break;
-        case '/':
-            tok = newToken(Token::TokenType::SLASH, l.ch);
-            break;
-        case '>':
-            tok = newToken(Token::TokenType::GT, l.ch);
-            break;
-        case '<':
-            tok = newToken(Token::TokenType::LT, l.ch);
-            break;
-        case 0:
-            tok = newToken(Token::TokenType::EOF_, l.ch);
-            break;
-        default:
-            if(isLetter(l)){
-                tok.literal = readIdentifier(l);
-                tok.type = Token::LookupIdent(tok.literal);
-                return tok;
-            }else if(isDigit(l)){
-                tok.type = Token::TokenType::INT;
-                tok.literal = readNumber(l);
-                return tok;
-            }
-            else{
-                tok = newToken(Token::TokenType::ILLEGAL, l.ch);
-            }
-        
-        }
-        l.readChar();
-        return tok;
-    }
-    Token::token newToken(Token::TokenType type, char ch){
-        Token::token tok;
-        tok.type = type;
-        tok.literal = std::string(1, ch);
-        return tok;
-    }
-
-    std::string readIdentifier(Lexer::lexer& l){
-        std::string ident = "";
-        while(isLetter(l)){
-            ident += l.ch;
-            l.readChar();
-            
-        }
-        return ident;
-    }
-
-    bool isLetter(Lexer::lexer& l){
-        return 'a' <= l.ch && l.ch <= 'z' || 'A' <= l.ch && l.ch <= 'Z' || l.ch == '_';
-    }
-
-    bool isDigit(Lexer::lexer& l){
-        return '0' <= l.ch && l.ch <= '9';
-    }
-
-    std::string readNumber(Lexer::lexer& l){
-        std::string ident = "";
-        while(isDigit(l)){
-            ident += l.ch;
-            l.readChar();
-        }
-        return ident;
-    }
-
-    void skipWhitespace(Lexer::lexer& l){
-        while(l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r'){
-            l.readChar();
-        }
-    }
-
-    char peekChar(Lexer::lexer& l){
-        if(l.readPosition < l.input.size()){
-            return l.input[l.readPosition];
-        }
-        return '\0';
-    }
+/*
+ * utility functions
+ */
+bool isLetter(char ch) {
+  return isalpha(ch) || ch == '_';
 }
+
+bool isDigit(char ch) {
+  return isdigit(ch);
+}
+
+/*
+ * private functions
+ */
+void Lexer::readChar() {
+  if(readPosition >= input.size()) {
+    ch = 0;
+  } else {
+    ch = input[readPosition];
+  }
+  position = readPosition;
+  readPosition++;
+}
+
+char Lexer::peekChar() {
+  if(readPosition >= input.size()) {
+    return 0;
+  } else {
+    return input[readPosition];
+  }
+}
+
+std::string Lexer::readIdentifier() {
+  int start = position;
+  while(isLetter(ch)) {
+    readChar();
+  }
+  return input.substr(start, position - start);
+}
+
+std::string Lexer::readNumber() {
+  int start = position;
+  while(isDigit(ch)) {
+    readChar();
+  }
+  return input.substr(start, position - start);
+}
+
+std::string Lexer::readString() {
+  int start = position + 1;
+  do {
+    readChar();
+  } while(ch != '"' && ch != 0);
+  return input.substr(start, position - start);
+}
+
+void Lexer::skipWhitespace() {
+  while(ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n')
+    readChar();
+  if(ch == '/' && peekChar() == '/') {  // add comment support
+    while(ch != '\n')
+      readChar();
+    skipWhitespace();
+  }
+}
+
+/*
+ * public functions
+ */
+void Lexer::New(std::string& input) {
+  this->input = input;
+  readPosition = 0;
+  readChar();
+}
+
+Token Lexer::NextToken() {
+  Token tok;
+  skipWhitespace();
+  switch (ch) {
+  case '=':
+    if(peekChar() == '=') {
+      tok = Token(EQ, "==");
+      readChar();
+    } else {
+      tok = Token(ASSIGN, ch);
+    }
+    readChar();
+    break;
+  case '!':
+    if(peekChar() == '=') {
+      tok = Token(NE, "!=");
+      readChar();
+    } else {
+      tok = Token(BANG, ch);
+    }
+    readChar();
+    break;
+  case '<':
+    if(peekChar() == '=') {
+      tok = Token(LE, "<=");
+      readChar();
+    } else {
+      tok = Token(LT, ch);
+    }
+    readChar();
+    break;
+  case '>':
+    if(peekChar() == '=') {
+      tok = Token(GE, ">=");
+      readChar();
+    } else {
+      tok = Token(GT, ch);
+    }
+    readChar();
+    break;
+  case '+':
+    tok = Token(PLUS, ch);
+    readChar();
+    break;
+  case '-':
+    tok = Token(MINUS, ch);
+    readChar();
+    break;
+  case '*':
+    tok = Token(ASTERISK, ch);
+    readChar();
+    break;
+  case '/':
+    tok = Token(SLASH, ch);
+    readChar();
+    break;
+  case '%':
+    tok = Token(PERCENT, ch);
+    readChar();
+    break;
+  case ',':
+    tok = Token(COMMA, ch);
+    readChar();
+    break;
+  case ';':
+    tok = Token(SEMICOLON, ch);
+    readChar();
+    break;
+  case '(':
+    tok = Token(LPAREN, ch);
+    readChar();
+    break;
+  case ')':
+    tok = Token(RPAREN, ch);
+    readChar();
+    break;
+  case '{':
+    tok = Token(LBRACE, ch);
+    readChar();
+    break;
+  case '}':
+    tok = Token(RBRACE, ch);
+    readChar();
+    break;
+  case '[':
+    tok = Token(LBRACKET, ch);
+    readChar();
+    break;
+  case ']':
+    tok = Token(RBRACKET, ch);
+    readChar();
+    break;
+  case '"':
+    tok = Token(STRING, readString());
+    readChar();
+    break;
+  case '&':
+    tok = Token(REF, ch);
+    readChar();
+    break;
+  case 0:
+    tok = Token(END, "");
+    readChar();
+    break;
+  default:
+    if(isLetter(ch)) {
+      tok.literal = readIdentifier();
+      tok.type = LookupIdent(tok.literal);
+    } else if(isDigit(ch)) {
+      tok.type = INT;
+      tok.literal = readNumber();
+    } else {
+      tok = Token(ILLEGAL, ch);
+      readChar();
+    }
+    break;
+  }
+  return tok;
+}
+
+}  // namespace monkey

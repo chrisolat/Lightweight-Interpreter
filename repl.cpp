@@ -1,21 +1,36 @@
-#include "repl.hpp"
+#include <iostream>
+#include <string>
+#include "./lexer.h"
+#include "./parser.h"
+#include "./evaluator.h"
+#include "./environment.h"
 
-namespace repl {
-    void start(std::istream& input, std::ostream& output){
-        
-        std::string line;
-        
-        while(1){
-            std::cout << PROMPT;
-            std::getline(input, line);
-            if(line.empty()){return;}
-            Lexer::lexer l = Lexer::New(line);
-            Token::token tok;
-            while(tok.type != Token::TokenType::EOF_){
-                tok = Lexer::NextToken(l);
-                std::cout << tok.literal << " " << Token::TokenToString(tok.type) << std::endl;
-            }
-            tok.type = Token::TokenType::ILLEGAL;
-        }
+void eval() {
+  const std::string PROMPT = ">> ";
+  monkey::Lexer l;
+  monkey::Parser p;
+  monkey::Evaluator e;
+  monkey::Environment* env = new monkey::Environment();
+  while(true) {
+    std::string line;
+    std::cout << PROMPT;
+    std::getline(std::cin, line);
+    l.New(line);
+    p.New(l);
+    monkey::Program* program = p.ParseProgram();
+    if (p.Errors().size()) {
+      for (auto error : p.Errors()) {
+        std::cout << error << std::endl;
+      }
+      continue;
     }
+    monkey::Object* o = e.Eval(program, env);
+    std::cout << "type: " << o->Type() << std::endl;
+    std::cout << o->Inspect() << std::endl;
+  }
+}
+
+int main() {
+  eval();
+  return 0;
 }
